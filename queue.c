@@ -2,6 +2,8 @@
 #include "new.h"
 #include "queue.h"
 
+//struct elem gElement;
+
 static void * Queue_ctor(void * _self, va_list * ap)
 {
     struct Queue * self = _self;
@@ -44,10 +46,8 @@ static int Queue_differ(const void * _self, const void * _obj)
 
 static int Queue_checkDataType(const void * _obj)
 {
-    const ADT* adt = _obj;
-    assert(adt);
-
-    if(adt->_size == 16)
+    const struct elem * self = _obj;
+    if(sizeOf(self->data) == 16)
         return 0;
     else
         return 1;
@@ -58,7 +58,8 @@ static const ADT _Queue =
     sizeof(struct Queue),
     Queue_ctor,
     Queue_dtor,
-    Queue_differ
+    Queue_differ,
+    NULL
 };
 const void * Queue = &_Queue;
 
@@ -67,30 +68,30 @@ struct Queue * Queue_insert(struct Queue * _self, const void * _data)
 {
     struct Queue * q = _self;
     void * data = (void *)_data;
+    struct elem * gElement = malloc(sizeof(struct elem));
 
-    assert(q && data);
+    assert(q && _data && gElement);
 
-    struct elem * element = NULL;
-    element->data = data;
-    element->next = NULL;
+    gElement->data = (const void *)data;
+    gElement->next = (struct elem *)NULL;
 
-    if((Queue_checkDataType((const void *)element) == q->dataType))
+    if((Queue_checkDataType((const void *)gElement) == q->dataType))
     {
         if(q->head == NULL)
         {
-            q->head = element;
+            q->head = gElement;
             q->tail = q->head;
             q->elemCount++;
         }
         else if((q->elemCount < q->nbElem))
         {
             struct elem * curr = q->head;
-            while(curr != NULL)
+            while(curr->next != NULL)
             {
                 curr = curr->next;
             }
-            curr = element;
-            q->tail = curr;
+            curr->next = gElement;
+            q->tail = curr->next;
             q->elemCount++;
         }
         else
@@ -109,5 +110,19 @@ struct Queue * Queue_insert(struct Queue * _self, const void * _data)
 int Queue_contains(const struct Queue * self, const void * element)
 {
     return 0;
+}
+
+void Queue_displayElements(const struct Queue * _self)
+{
+    const struct Queue * self = _self;
+    struct elem * curr = self->head;
+    int i = 0;
+
+    while(i < self->elemCount)
+    {
+        displayElement(curr->data);
+        curr = curr->next;
+        i++;
+    }
 }
 

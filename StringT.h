@@ -1,7 +1,7 @@
 #ifndef STRING_H_INCLUDED
 #define STRING_H_INCLUDED
 
-struct String{
+struct StringT{
     const void * adt;
     char * text;
 };

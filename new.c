@@ -39,6 +39,15 @@ int differ(const void * self, const void * obj)
     return (*adt_ptr)->differ(self,obj);
 }
 
+void displayElement(const void * self)
+{
+    const ADT *const * adt_ptr = self;
+
+    assert(adt_ptr);
+
+    (*adt_ptr)->display(self);
+}
+
 size_t sizeOf(const void * self)
 {
     const ADT * const * adt_ptr = self;
