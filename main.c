@@ -27,6 +27,8 @@ int main(void)
 
     Queue_displayElements(q);
 
+    printf("%d\n", Queue_contains(q,"Go!"));
+
     delete_adt(a);
     delete_adt(b);
 

@@ -1,9 +1,7 @@
 #include "adt.h"
 #include "new.h"
 #include "queue.h"
-
-//struct elem gElement;
-
+#include "StringT.h"
 static void * Queue_ctor(void * _self, va_list * ap)
 {
     struct Queue * self = _self;
@@ -51,6 +49,14 @@ static int Queue_checkDataType(const void * _obj)
         return 0;
     else
         return 1;
+}
+
+static const void * Queue_getElementValue(struct elem * _element)
+{
+    const struct StringT * data = _element->data;
+    const char * val = data->text;
+
+    return val;
 }
 
 static const ADT _Queue =
@@ -107,8 +113,19 @@ struct Queue * Queue_insert(struct Queue * _self, const void * _data)
     return q;
 }
 
-int Queue_contains(const struct Queue * self, const void * element)
+int Queue_contains(const struct Queue * _self, const void * value)
 {
+    const struct Queue * self = _self;
+    struct elem * curr = self->head;
+    int i = 0;
+
+    while(i < self->elemCount)
+    {
+        if(strcmp(Queue_getElementValue(curr),value) == 0)
+            return 1;
+        curr = curr->next;
+        i++;
+    }
     return 0;
 }
 
