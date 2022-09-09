@@ -2,6 +2,18 @@
 #include "new.h"
 #include "queue.h"
 #include "StringT.h"
+
+/** \brief  Queue Constructor
+ *
+ * \param   _self: pointer to memory location for queue
+ * \param   ap: variable arg list containing
+ *          elementNb: number of elements queue can hold
+ *          type: string specifying the element datatype
+ *
+ * \return  self: void pointer to new Queue instance
+ *
+ */
+
 static void * Queue_ctor(void * _self, va_list * ap)
 {
     struct Queue * self = _self;
@@ -21,8 +33,27 @@ static void * Queue_ctor(void * _self, va_list * ap)
     return self;
 }
 
-static void * Queue_dtor(void * self)
+/** \brief Queue destructor
+ *
+ * \param
+ * \param
+ * \return
+ *
+ */
+
+static void * Queue_dtor(void * _self)
 {
+    struct Queue * self = _self;
+    struct elem * curr = self->head;
+
+    assert(self && curr);
+    while(curr != NULL)
+    {
+        self->head = curr->next;
+        delete_adt(curr->data);
+        curr = curr->next;
+    }
+
     return self;
 }
 
@@ -78,7 +109,7 @@ struct Queue * Queue_insert(struct Queue * _self, const void * _data)
 
     assert(q && _data && gElement);
 
-    gElement->data = (const void *)data;
+    gElement->data = data;
     gElement->next = (struct elem *)NULL;
 
     if((Queue_checkDataType((const void *)gElement) == q->dataType))

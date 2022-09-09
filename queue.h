@@ -2,7 +2,7 @@
 #define QUEUE_H_INCLUDED
 
 struct elem {
-    const void * data;
+    void * data;
     struct elem * next;
 };
 

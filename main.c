@@ -2,9 +2,13 @@
 #include "StringT.h"
 #include "queue.h"
 #include "new.h"
+#include "version.h"
 
 int main(void)
 {
+    printf("**********************************************\n");
+    printf("OOP PRACTICE - STRINGS AND QUEUES v%s\n",FULLVERSION_STRING);
+    printf("**********************************************\n\n");
     struct StringT * a = new_adt(String,"Hey");
     struct StringT * b = new_adt(String, "Hi");
     struct StringT * c = new_adt(String, "Hello");
@@ -12,7 +16,7 @@ int main(void)
     struct StringT * e = new_adt(String, "Let's");
     struct StringT * f = new_adt(String, "Go!");
 
-    struct Queue * q = new_adt(Queue, 5, "String");
+    struct Queue * q = new_adt(Queue, 6, "String");
 
     printf("Size of a is %u\n",sizeOf(a));
     printf("Queue length is %d\n", q->nbElem);
@@ -25,13 +29,13 @@ int main(void)
     Queue_insert(q, e);
     Queue_insert(q, f);
 
+    printf("Size of elem struct is %u and size of queue is %u\n",sizeof(struct elem),sizeOf(q));
+
     Queue_displayElements(q);
 
     printf("%d\n", Queue_contains(q,"Go!"));
 
-    delete_adt(a);
-    delete_adt(b);
-
+    delete_adt(q);
 
     return 0;
 }
