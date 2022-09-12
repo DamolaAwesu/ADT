@@ -1,15 +1,16 @@
 #ifndef TREE_H_INCLUDED
 #define TREE_H_INCLUDED
 
-struct key {
+struct Node {
     int val;
-    struct key * left;
-    struct key * right;
+    struct Node * left;
+    struct Node * right;
+    struct Node * parent;
 };
 
 typedef struct {
     const void * adt;
-    struct key * root;
+    struct Node * root;
     int height;
 }Tree;
 

@@ -8,8 +8,10 @@
 int main(void)
 {
     printf("**********************************************\n");
-    printf("OOP PRACTICE - STRINGS AND QUEUES v%s\n",FULLVERSION_STRING);
+    printf("OOP PRACTICE - ADTs v%s\n",FULLVERSION_STRING);
     printf("**********************************************\n\n");
+
+    #ifdef QUEUE_TEST
     struct StringT * a = new_adt(String,"Hey");
     struct StringT * b = new_adt(String, "Hi");
     struct StringT * c = new_adt(String, "Hello");
@@ -18,12 +20,6 @@ int main(void)
     struct StringT * f = new_adt(String, "Go!");
 
     struct Queue * q = new_adt(Queue, 6, "String");
-    Tree * t = new_adt(tree);
-    Tree * t2 = new_adt(tree);
-
-    printf("%d\n",differ(t, t2));
-
-    printf("Size of t is %u\n", sizeOf(t));
 
     printf("Size of a is %u\n",sizeOf(a));
     printf("Queue length is %d\n", q->nbElem);
@@ -43,6 +39,22 @@ int main(void)
     printf("%d\n", Queue_contains(q,"Go!"));
 
     delete_adt(q);
+    #else
+    Tree * t = new_adt(tree);
+    Tree * t2 = new_adt(tree);
 
+    printf("%d\n",differ(t, t2));
+
+    printf("Size of t is %u\n", sizeOf(t));
+
+    Tree_insertNode(t, 15);
+    Tree_insertNode(t, 5);
+    Tree_insertNode(t, 25);
+    Tree_insertNode(t, 17);
+    Tree_insertNode(t, 1);
+    Tree_insertNode(t, 15);
+
+
+    #endif
     return 0;
 }
