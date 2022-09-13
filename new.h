@@ -5,6 +5,7 @@
 #include "stdlib.h"
 #include "assert.h"
 #include "string.h"
+#include "time.h"
 #include "stdio.h"
 
 void * new_adt(const void * _adt,...);

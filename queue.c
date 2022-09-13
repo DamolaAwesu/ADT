@@ -73,6 +73,24 @@ static int Queue_differ(const void * _self, const void * _obj)
     return ((self->head == obj->head) && (self->tail == obj->tail));
 }
 
+static const ADT _Queue =
+{
+    sizeof(struct Queue),
+    Queue_ctor,
+    Queue_dtor,
+    Queue_differ,
+    NULL
+};
+const void * Queue = &_Queue;
+
+
+/*******************************************************
+********************************************************
+* Helper Functions
+********************************************************
+********************************************************
+*/
+
 static int Queue_checkDataType(const void * _obj)
 {
     const struct elem * self = _obj;
@@ -90,18 +108,15 @@ static const void * Queue_getElementValue(struct elem * _element)
     return val;
 }
 
-static const ADT _Queue =
-{
-    sizeof(struct Queue),
-    Queue_ctor,
-    Queue_dtor,
-    Queue_differ,
-    NULL
-};
-const void * Queue = &_Queue;
 
+/*******************************************************
+********************************************************
+* Class Methods (Operations)
+********************************************************
+********************************************************
+*/
 
-struct Queue * Queue_insert(struct Queue * _self, const void * _data)
+struct Queue * Queue_enqueue(struct Queue * _self, const void * _data)
 {
     struct Queue * q = _self;
     void * data = (void *)_data;
@@ -114,6 +129,7 @@ struct Queue * Queue_insert(struct Queue * _self, const void * _data)
 
     if((Queue_checkDataType((const void *)gElement) == q->dataType))
     {
+        clock_t start = clock();
         if(q->head == NULL)
         {
             q->head = gElement;
@@ -122,19 +138,17 @@ struct Queue * Queue_insert(struct Queue * _self, const void * _data)
         }
         else if((q->elemCount < q->nbElem))
         {
-            struct elem * curr = q->head;
-            while(curr->next != NULL)
-            {
-                curr = curr->next;
-            }
-            curr->next = gElement;
-            q->tail = curr->next;
+            q->tail->next = gElement;
             q->elemCount++;
+            q->tail = q->tail->next;
         }
         else
         {
             printf("Queue full!\n");
         }
+        clock_t stop = clock();
+        double elapsed = (double)(stop - start) * 1000.0 / CLOCKS_PER_SEC;
+        printf("Insert time in ms: %.4f\n", elapsed);
     }
     else
     {
@@ -142,6 +156,21 @@ struct Queue * Queue_insert(struct Queue * _self, const void * _data)
     }
 
     return q;
+}
+
+void * Queue_dequeue(struct Queue * self)
+{
+    assert(self);
+
+    struct elem * head = self->head;
+    struct elem * new_head = head->next;
+
+    void * data = head->data;
+
+    self->head = new_head;
+    self->elemCount--;
+
+    return data;
 }
 
 int Queue_contains(const struct Queue * _self, const void * value)

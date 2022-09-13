@@ -108,22 +108,14 @@ static struct Node * node_min(struct Node * node)
 static struct Node * node_successor(struct Node * node)
 {
     struct Node * temp = NULL;
-    struct Node * curr = NULL;
 
     if(node->right != NULL)
     {
         temp = node_min(node->right);
     }
-
-    if(temp != NULL)
+    else
     {
-        curr = temp->parent;
-
-        while((curr != NULL) && (node == curr->right))
-        {
-            temp = curr->right;
-            curr = curr->parent;
-        }
+        temp = node;
     }
 
     return temp;
@@ -132,7 +124,6 @@ static struct Node * node_successor(struct Node * node)
 static struct Node * node_predecessor(struct Node * node)
 {
     struct Node * temp = NULL;
-    struct Node * curr = NULL;
 
     if(node->left != NULL)
     {
@@ -141,9 +132,47 @@ static struct Node * node_predecessor(struct Node * node)
     return temp;
 }
 
-static struct Node * update_tree(Tree * _self, struct Node * nodeToBeReplaced, struct Node * nodeToReplaceWith)
+static struct Node * Tree_findNodeInTree(Tree * self, const int data)
 {
-    return NULL;
+    struct Node * curr = self->root;
+
+    while((curr != NULL)&&(data != curr->val))
+    {
+        if(data < curr->val)
+        {
+            curr = curr->left;
+        }
+        else if(data > curr->val)
+        {
+            curr = curr->right;
+        }
+    }
+    return curr;
+}
+
+static Tree * update_tree(Tree * self, struct Node * nodeToBeReplaced, struct Node * nodeToReplaceWith)
+{
+    assert(self && nodeToBeReplaced);
+
+    if(nodeToBeReplaced->parent == NULL)
+    {
+        self->root = nodeToReplaceWith;
+    }
+    else if(nodeToBeReplaced->parent->left == nodeToBeReplaced)
+    {
+        nodeToBeReplaced->parent->left = nodeToReplaceWith;
+    }
+    else if(nodeToBeReplaced->parent->right == nodeToBeReplaced)
+    {
+        nodeToBeReplaced->parent->right = nodeToReplaceWith;
+    }
+
+    if(nodeToReplaceWith != NULL)
+    {
+        nodeToReplaceWith->parent = nodeToBeReplaced->parent;
+    }
+
+    return self;
 }
 
 /*******************************************************
@@ -152,6 +181,16 @@ static struct Node * update_tree(Tree * _self, struct Node * nodeToBeReplaced, s
 ********************************************************
 ********************************************************
 */
+
+int Tree_contains(Tree * self, const int value)
+{
+    struct Node * node = Tree_findNodeInTree(self, value);
+
+    if(node != NULL)
+        return 1;
+    else
+        return 0;
+}
 
 /** \brief Insert new node to the one side of last leaf node
  *
@@ -205,18 +244,35 @@ Tree * Tree_insertNode(Tree * _self, const int data)
 Tree * Tree_deleteNode(Tree * _self, const int data)
 {
     Tree * self = _self;
-    struct Node * curr = self->root;
+    struct Node * node = Tree_findNodeInTree(self, data);
+    printf("%d\n", node->val);
+    assert(self && node);
 
-    assert(self && curr);
+    if(node->left == NULL)
+    {
+        update_tree(self, node, node->right);
+    }
+    else if(node->right == NULL)
+    {
+        update_tree(self, node, node->left);
+    }
+    else
+    {
+        struct Node * successor = node_successor(node);
+        printf("%d\n", successor->val);
 
-    /** TODO (aawesu#2#): check if value exists in tree */
+        if((successor->parent != node->parent))
+        {
+            update_tree(self, successor, successor->right);
+            successor->right = node->right;
+            successor->right->parent = successor;
+        }
+        update_tree(self, node, successor);
+        successor->left = node->left;
+        successor->left->parent = successor;
 
-    //if(exists in tree)
-        //if(in root node), delete value but keep root pointer
-        //else if leaf node, delete value and set pointer to NULL
-        //else
-            /** TODO (aawesu#2#): remove node and adjust nodes to cover empty space */
-    //else, display not found message
+        free(node);
+    }
 
     return self;
 }
