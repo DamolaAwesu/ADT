@@ -40,7 +40,7 @@ static int String_differ(const void * _self, const void * _obj)
     return strcmp(self->text, obj->text);
 }
 
-static void String_display(const void * _self)
+static void String_display(const void * _self, va_list * ap)
 {
     const struct StringT * self = _self;
     assert(self);

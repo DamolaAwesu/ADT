@@ -23,6 +23,7 @@ void * new_adt(const void * _adt, ...)
 
 void delete_adt(void * self)
 {
+    assert(self);
     const ADT ** adt = self;
 
     if(self && *adt && (*adt)->dtor)
@@ -39,13 +40,18 @@ int differ(const void * self, const void * obj)
     return (*adt_ptr)->differ(self,obj);
 }
 
-void displayElement(const void * self)
+void displayElement(const void * self, ...)
 {
     const ADT *const * adt_ptr = self;
 
     assert(adt_ptr);
 
-    (*adt_ptr)->display(self);
+    va_list ap;
+    va_start(ap,self);
+
+    (*adt_ptr)->display(self,&ap);
+
+    va_end(ap);
 }
 
 size_t sizeOf(const void * self)
