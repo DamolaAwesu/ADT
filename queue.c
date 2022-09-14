@@ -78,7 +78,7 @@ static int Queue_differ(const void * _self, const void * _obj)
     return ((self->head == obj->head) && (self->tail == obj->tail));
 }
 
-static void Queue_displayElements(const void * _self)
+static void Queue_displayElements(const void * _self, va_list * ap)
 {
     const struct Queue * self = _self;
     assert(self);

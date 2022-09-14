@@ -52,13 +52,62 @@ static int Tree_differ(const void * _self, const void * _obj)
     return ((self->root == obj->root) && (self->height == obj->height));
 }
 
+static void Tree_inorder(struct Node * root)
+{
+    if(root != NULL)
+    {
+        Tree_inorder(root->left);
+        printf("%d ", root->val);
+        Tree_inorder(root->right);
+    }
+}
+
+static void Tree_preorder(struct Node * root)
+{
+    if(root != NULL)
+    {
+        printf("%d ", root->val);
+        Tree_preorder(root->left);
+        Tree_preorder(root->right);
+    }
+}
+
+static void Tree_postorder(struct Node * root)
+{
+    if(root != NULL)
+    {
+        Tree_postorder(root->left);
+        Tree_postorder(root->right);
+        printf("%d ", root->val);
+    }
+}
+
 static void Tree_displayElements(const void * _self, va_list * ap)
 {
     const Tree * self = _self;
+    const char * traversalType = va_arg(*ap, const char *);
 
-    assert(self);
+    struct Node * root = self->root;
 
+    assert(self && root);
 
+    if(strcmp(traversalType,"inorder"))
+    {
+        Tree_inorder(root);
+        printf("\n");
+    }
+    else if(strcmp(traversalType,"preorder"))
+    {
+        Tree_preorder(root);
+    }
+    else if(strcmp(traversalType,"postorder"))
+    {
+        Tree_postorder(root);
+    }
+    else
+    {
+        printf("Invalid tree traversal mode\n");
+    }
 }
 
 
@@ -68,7 +117,7 @@ static const ADT _Tree =
     Tree_ctor,
     Tree_dtor,
     Tree_differ,
-    NULL
+    Tree_displayElements
 };
 
 const void * tree = &_Tree;

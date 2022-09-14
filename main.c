@@ -71,6 +71,8 @@ int main(void)
     Tree_deleteNode(t, arr[4]);
 
     printf("%s\n", (Tree_contains(t, arr[4]) ? "Yes":"No"));
+
+    displayElement(t,"inorder");
     #endif
 
     return 0;
