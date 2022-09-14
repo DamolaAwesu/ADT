@@ -3,6 +3,11 @@
 #include "queue.h"
 #include "StringT.h"
 
+struct elem {
+    void * data;
+    struct elem * next;
+};
+
 /** \brief  Queue Constructor
  *
  * \param   _self: pointer to memory location for queue
@@ -73,13 +78,28 @@ static int Queue_differ(const void * _self, const void * _obj)
     return ((self->head == obj->head) && (self->tail == obj->tail));
 }
 
+static void Queue_displayElements(const void * _self)
+{
+    const struct Queue * self = _self;
+    assert(self);
+    struct elem * curr = self->head;
+    int i = 0;
+
+    while(i < self->elemCount)
+    {
+        displayElement(curr->data);
+        curr = curr->next;
+        i++;
+    }
+}
+
 static const ADT _Queue =
 {
     sizeof(struct Queue),
     Queue_ctor,
     Queue_dtor,
     Queue_differ,
-    NULL
+    Queue_displayElements
 };
 const void * Queue = &_Queue;
 
@@ -129,7 +149,6 @@ struct Queue * Queue_enqueue(struct Queue * _self, const void * _data)
 
     if((Queue_checkDataType((const void *)gElement) == q->dataType))
     {
-        clock_t start = clock();
         if(q->head == NULL)
         {
             q->head = gElement;
@@ -146,9 +165,6 @@ struct Queue * Queue_enqueue(struct Queue * _self, const void * _data)
         {
             printf("Queue full!\n");
         }
-        clock_t stop = clock();
-        double elapsed = (double)(stop - start) * 1000.0 / CLOCKS_PER_SEC;
-        printf("Insert time in ms: %.4f\n", elapsed);
     }
     else
     {
@@ -189,17 +205,4 @@ int Queue_contains(const struct Queue * _self, const void * value)
     return 0;
 }
 
-void Queue_displayElements(const struct Queue * _self)
-{
-    const struct Queue * self = _self;
-    struct elem * curr = self->head;
-    int i = 0;
-
-    while(i < self->elemCount)
-    {
-        displayElement(curr->data);
-        curr = curr->next;
-        i++;
-    }
-}
 
