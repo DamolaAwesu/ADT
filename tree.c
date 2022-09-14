@@ -2,6 +2,13 @@
 #include "new.h"
 #include "tree.h"
 
+struct Node {
+    int val;
+    struct Node * left;
+    struct Node * right;
+    struct Node * parent;
+};
+
 static void * Tree_ctor(void * _self, va_list * ap)
 {
     Tree * self = _self;
@@ -43,6 +50,15 @@ static int Tree_differ(const void * _self, const void * _obj)
         return -1;
 
     return ((self->root == obj->root) && (self->height == obj->height));
+}
+
+static void Tree_displayElements(const void * _self, va_list * ap)
+{
+    const Tree * self = _self;
+
+    assert(self);
+
+
 }
 
 
@@ -244,9 +260,11 @@ Tree * Tree_insertNode(Tree * _self, const int data)
 Tree * Tree_deleteNode(Tree * _self, const int data)
 {
     Tree * self = _self;
+    assert(self);
+
     struct Node * node = Tree_findNodeInTree(self, data);
-    printf("%d\n", node->val);
     assert(self && node);
+    printf("%d\n", node->val);
 
     if(node->left == NULL)
     {
@@ -261,7 +279,7 @@ Tree * Tree_deleteNode(Tree * _self, const int data)
         struct Node * successor = node_successor(node);
         printf("%d\n", successor->val);
 
-        if((successor->parent != node->parent))
+        if((successor->parent != node))
         {
             update_tree(self, successor, successor->right);
             successor->right = node->right;
@@ -276,4 +294,5 @@ Tree * Tree_deleteNode(Tree * _self, const int data)
 
     return self;
 }
+
 

@@ -19,7 +19,7 @@ static void * String_dtor(void * _self)
 {
     struct StringT * self = _self;
 
-    free(self->text); self->text = 0;
+    free(self->text); //self->text = 0;
 
     return self;
 }
