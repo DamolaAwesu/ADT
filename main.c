@@ -73,6 +73,8 @@ int main(void)
     printf("%s\n", (Tree_contains(t, arr[4]) ? "Yes":"No"));
 
     displayElement(t,"inorder");
+
+    delete_adt(t);
     #endif
 
     return 0;
