@@ -24,13 +24,12 @@ static void * Tree_ctor(void * _self, va_list * ap)
 static void * Tree_dtor(void * _self)
 {
     Tree * self = _self;
-    struct Node * curr = self->root;
 
-    assert(self && curr);
+    assert(self);
 
-    while(curr != NULL)
+    while(self->root != NULL)
     {
-        /** TODO (aawesu#1#): handle destruction of tree objects (most likely just a call to free() */
+        self = Tree_deleteNode(self,self->root->val);
     }
 
     return self;
@@ -313,7 +312,7 @@ Tree * Tree_deleteNode(Tree * _self, const int data)
 
     struct Node * node = Tree_findNodeInTree(self, data);
     assert(self && node);
-    printf("%d\n", node->val);
+    //printf("%d\n", node->val);
 
     if(node->left == NULL)
     {
@@ -326,7 +325,7 @@ Tree * Tree_deleteNode(Tree * _self, const int data)
     else
     {
         struct Node * successor = node_successor(node);
-        printf("%d\n", successor->val);
+        //printf("%d\n", successor->val);
 
         if((successor->parent != node))
         {
