@@ -7,9 +7,11 @@ INCLUDE = -I.
 
 CC = gcc
 
+COMPILE = -DQUEUE_TEST
+
 LIBS =
 
-OBJECTS += $(OBJ_DIR)/new.o \
+OBJECTS += $(OBJ_DIR)/new_adt.o \
 	$(OBJ_DIR)/stringT.o \
 	$(OBJ_DIR)/queue.o \
 	$(OBJ_DIR)/tree.o
@@ -21,7 +23,7 @@ $(BIN_DIR)/$(APP) : $(OBJECTS)
 
 # C compiler rule
 $(OBJ_DIR)/%.o : %.c
-	$(CC) -c -o $@ $< $(INCLUDE)
+	$(CC) -c -o $@ $< $(INCLUDE) $(COMPILE)
 
 directory:
 	@mkdir -p $(subst /,\,$(OBJ_DIR));
