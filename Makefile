@@ -18,6 +18,8 @@ OBJECTS += $(OBJ_DIR)/new_adt.o \
 
 .PHONY: clean directory
 
+all: directory $(BIN_DIR)/$(APP)
+
 $(BIN_DIR)/$(APP) : $(OBJECTS)
 	$(CC) -o $@ $^ $(INCLUDE) $(LIBS)
 
