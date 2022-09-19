@@ -14,7 +14,8 @@ LIBS =
 OBJECTS += $(OBJ_DIR)/new.o \
 	$(OBJ_DIR)/stringT.o \
 	$(OBJ_DIR)/queue.o \
-	$(OBJ_DIR)/tree.o
+	$(OBJ_DIR)/tree.o \
+	$(OBJ_DIR)/main.o
 
 .PHONY: clean directory
 
