@@ -9,6 +9,11 @@ CC = gcc
 
 LIBS =
 
+OBJECTS += $(OBJ_DIR)/new.o \
+	$(OBJ_DIR)/stringT.o \
+	$(OBJ_DIR)/queue.o \
+	$(OBJ_DIR)/tree.o
+
 .PHONY: clean directory
 
 $(BIN_DIR)/$(APP) : $(OBJ_DIR)/%.o
