@@ -16,7 +16,7 @@ OBJECTS += $(OBJ_DIR)/new.o \
 
 .PHONY: clean directory
 
-$(BIN_DIR)/$(APP) : $(OBJ_DIR)/%.o
+$(BIN_DIR)/$(APP) : $(OBJECTS)
 	$(CC) -o $@ $^ $(INCLUDE) $(LIBS)
 
 # C compiler rule
