@@ -11,7 +11,7 @@ COMPILE = -DQUEUE_TEST
 
 LIBS =
 
-OBJECTS += $(OBJ_DIR)/new_adt.o \
+OBJECTS += $(OBJ_DIR)/new.o \
 	$(OBJ_DIR)/stringT.o \
 	$(OBJ_DIR)/queue.o \
 	$(OBJ_DIR)/tree.o
