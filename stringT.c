@@ -24,7 +24,7 @@ static void * String_dtor(void * _self)
     return self;
 }
 
-static int String_differ(const void * _self, const void * _obj)
+static uint8_t String_differ(const void * _self, const void * _obj)
 {
     const struct StringT * self = _self;
     const struct StringT * obj = _obj;
@@ -49,12 +49,27 @@ static void String_display(const void * _self, va_list * ap)
         printf("%s\n", self->text);
 }
 
+static uint32_t String_length(const void * _self)
+{
+    const struct StringT * self = _self;
+    uint32_t len = 0;
+
+    assert(self);
+
+    if(self->text != NULL)
+    {
+        while(self->text[len++]!= '\0');
+    }
+    return (len-1);
+}
+
 static const ADT _String =
 {
     sizeof(struct StringT),
     String_ctor,
     String_dtor,
     String_differ,
-    String_display
+    String_display,
+    String_length
 };
 const void * String = &_String;

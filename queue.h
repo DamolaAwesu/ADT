@@ -1,15 +1,17 @@
 #ifndef QUEUE_H_INCLUDED
 #define QUEUE_H_INCLUDED
 
+#include "stdint.h"
+
 typedef struct elem elem;
 
 struct Queue {
     const void * adt;
-    int dataType;     /* 0: for string, 1 for int */
-    int nbElem;
+    uint8_t dataType;     /* 0: for string, 1 for int */
+    uint32_t nbElem;
     struct elem * head;
     struct elem * tail;
-    int elemCount;
+    uint32_t elemCount;
 };
 
 extern const void * Queue;

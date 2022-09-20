@@ -35,7 +35,7 @@ static void * Tree_dtor(void * _self)
     return self;
 }
 
-static int Tree_differ(const void * _self, const void * _obj)
+static uint8_t Tree_differ(const void * _self, const void * _obj)
 {
     const Tree * self = _self;
     const Tree * obj = _obj;
@@ -98,10 +98,12 @@ static void Tree_displayElements(const void * _self, va_list * ap)
     else if(strcmp(traversalType,"preorder"))
     {
         Tree_preorder(root);
+        printf("\n");
     }
     else if(strcmp(traversalType,"postorder"))
     {
         Tree_postorder(root);
+        printf("\n");
     }
     else
     {
@@ -109,6 +111,14 @@ static void Tree_displayElements(const void * _self, va_list * ap)
     }
 }
 
+static uint32_t Tree_length(const void * _self)
+{
+    const Tree * self = _self;
+
+    assert(self);
+
+    return (self->height);
+}
 
 static const ADT _Tree =
 {
@@ -116,7 +126,8 @@ static const ADT _Tree =
     Tree_ctor,
     Tree_dtor,
     Tree_differ,
-    Tree_displayElements
+    Tree_displayElements,
+    Tree_length
 };
 
 const void * tree = &_Tree;
@@ -246,7 +257,7 @@ static Tree * update_tree(Tree * self, struct Node * nodeToBeReplaced, struct No
 ********************************************************
 */
 
-int Tree_contains(Tree * self, const int value)
+uint8_t Tree_contains(Tree * self, const uint32_t value)
 {
     struct Node * node = Tree_findNodeInTree(self, value);
 
@@ -264,7 +275,7 @@ int Tree_contains(Tree * self, const int value)
  *
  */
 
-Tree * Tree_insertNode(Tree * _self, const int data)
+Tree * Tree_insertNode(Tree * _self, const uint32_t data)
 {
     Tree * self = _self;
     struct Node * node = new_node(data);
@@ -305,14 +316,13 @@ Tree * Tree_insertNode(Tree * _self, const int data)
  *
  */
 
-Tree * Tree_deleteNode(Tree * _self, const int data)
+Tree * Tree_deleteNode(Tree * _self, const uint32_t data)
 {
     Tree * self = _self;
     assert(self);
 
     struct Node * node = Tree_findNodeInTree(self, data);
     assert(self && node);
-    //printf("%d\n", node->val);
 
     if(node->left == NULL)
     {
@@ -325,7 +335,6 @@ Tree * Tree_deleteNode(Tree * _self, const int data)
     else
     {
         struct Node * successor = node_successor(node);
-        //printf("%d\n", successor->val);
 
         if((successor->parent != node))
         {
@@ -339,6 +348,7 @@ Tree * Tree_deleteNode(Tree * _self, const int data)
 
         free(node);
     }
+    self->height--;
 
     return self;
 }

@@ -31,7 +31,7 @@ void delete_adt(void * self)
     free(self);
 }
 
-int differ(const void * self, const void * obj)
+uint8_t differ(const void * self, const void * obj)
 {
     const ADT * const * adt_ptr = self;
 
@@ -54,11 +54,20 @@ void displayElement(const void * self, ...)
     va_end(ap);
 }
 
-size_t sizeOf(const void * self)
+uint8_t sizeOf(const void * self)
 {
     const ADT * const * adt_ptr = self;
 
-    assert(self);
+    assert(adt_ptr);
 
     return (*adt_ptr)->_size;
+}
+
+uint32_t get_length(const void * self)
+{
+    const ADT * const * adt_ptr = self;
+
+    assert(adt_ptr);
+
+    return (*adt_ptr)->length(self);
 }
