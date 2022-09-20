@@ -62,7 +62,7 @@ static void * Queue_dtor(void * _self)
     return self;
 }
 
-static int Queue_differ(const void * _self, const void * _obj)
+static uint8_t Queue_differ(const void * _self, const void * _obj)
 {
     const struct Queue * self = _self;
     const struct Queue * obj = _obj;
@@ -93,13 +93,23 @@ static void Queue_displayElements(const void * _self, va_list * ap)
     }
 }
 
+static uint32_t Queue_length(const void * _self)
+{
+    const struct Queue * self = _self;
+
+    assert(self);
+
+    return (self->elemCount);
+}
+
 static const ADT _Queue =
 {
     sizeof(struct Queue),
     Queue_ctor,
     Queue_dtor,
     Queue_differ,
-    Queue_displayElements
+    Queue_displayElements,
+    Queue_length
 };
 const void * Queue = &_Queue;
 
@@ -110,19 +120,6 @@ const void * Queue = &_Queue;
 ********************************************************
 ********************************************************
 */
-
-static struct elem * new_qElement(const void * _data)
-{
-    void * data = (void *)_data;
-    struct elem * qElement = malloc(sizeof(struct elem));
-
-    assert(data && qElement);
-
-    qElement->data = data;
-    qElement->next = (struct elem *)NULL;
-
-    return qElement;
-}
 
 static int Queue_checkDataType(const void * _obj)
 {
@@ -152,20 +149,25 @@ static const void * Queue_getElementValue(struct elem * _element)
 struct Queue * Queue_enqueue(struct Queue * _self, const void * _data)
 {
     struct Queue * q = _self;
-    
-    struct elem * qElement = new_qElement(_data);
+    void * data = (void *)_data;
+    struct elem * gElement = malloc(sizeof(struct elem));
 
-    if((Queue_checkDataType((const void *)qElement) == q->dataType))
+    assert(q && _data && gElement);
+
+    gElement->data = data;
+    gElement->next = (struct elem *)NULL;
+
+    if((Queue_checkDataType((const void *)gElement) == q->dataType))
     {
         if(q->head == NULL)
         {
-            q->head = qElement;
+            q->head = gElement;
             q->tail = q->head;
             q->elemCount++;
         }
         else if((q->elemCount < q->nbElem))
         {
-            q->tail->next = qElement;
+            q->tail->next = gElement;
             q->elemCount++;
             q->tail = q->tail->next;
         }

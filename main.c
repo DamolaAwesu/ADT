@@ -23,7 +23,7 @@ int main(void)
 
     struct Queue * q = new_adt(Queue, 6, "String");
 
-    printf("Size of a is %u\n",sizeOf(a));
+    printf("Length of c is %u\n",get_length(c));
     printf("Queue length is %d\n", q->nbElem);
     printf("Queue element type is %s\n", ((q->dataType == 0)?"String":"Unsupported"));
 
@@ -66,9 +66,11 @@ int main(void)
     printf("\n");
     printf("%d\n",differ(t, t2));
 
-    printf("Size of t is %u\n", sizeOf(t));
+    printf("Length of t is %u\n", get_length(t));
 
     Tree_deleteNode(t, arr[4]);
+
+    printf("Length of t is %u\n", get_length(t));
 
     printf("%s\n", (Tree_contains(t, arr[4]) ? "Yes":"No"));
 
