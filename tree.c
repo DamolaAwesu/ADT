@@ -250,6 +250,31 @@ static Tree * update_tree(Tree * self, struct Node * nodeToBeReplaced, struct No
     return self;
 }
 
+static uint32_t max(uint32_t x, uint32_t y)
+{
+    return ((x > y)? x : y);
+}
+
+static uint32_t Tree_findHeight(struct Node * node)
+{
+    if ((node == NULL)||(node->left == NULL && node->right == NULL))
+    {
+        return 0; // was 1; apparently a node with no children has a height of 0.
+    }
+    else if (node->left == NULL)
+    {
+        return 1 + Tree_findHeight(node->right);
+    }
+    else if (node->right == NULL)
+    {
+        return 1 + Tree_findHeight(node->left);
+    }
+    else
+    {
+        return 1 + max(Tree_findHeight(node->left), Tree_findHeight(node->right));
+    }
+}
+
 /*******************************************************
 ********************************************************
 * Class Methods (Operations)
@@ -303,7 +328,7 @@ Tree * Tree_insertNode(Tree * _self, const uint32_t data)
         else
             temp->right = node;
     }
-    self->height++;
+    self->height = Tree_findHeight(self->root);
 
     return self;
 }
@@ -348,7 +373,7 @@ Tree * Tree_deleteNode(Tree * _self, const uint32_t data)
 
         free(node);
     }
-    self->height--;
+    self->height = Tree_findHeight(self->root);
 
     return self;
 }
