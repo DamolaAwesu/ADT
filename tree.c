@@ -111,7 +111,7 @@ static void Tree_displayElements(const void * _self, va_list * ap)
     }
 }
 
-static uint32_t Tree_length(const void * _self)
+static uint32_t Tree_height(const void * _self)
 {
     const Tree * self = _self;
 
@@ -127,7 +127,7 @@ static const ADT _Tree =
     Tree_dtor,
     Tree_differ,
     Tree_displayElements,
-    Tree_length
+    Tree_height
 };
 
 const void * tree = &_Tree;
