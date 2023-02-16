@@ -7,7 +7,7 @@ INCLUDE = -I.
 
 CC = gcc
 
-COMPILE = -DQUEUE_TEST
+#COMPILE = -DQUEUE_TEST
 
 LIBS =
 
